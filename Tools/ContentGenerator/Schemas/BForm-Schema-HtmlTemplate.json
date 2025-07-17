@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "domainName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

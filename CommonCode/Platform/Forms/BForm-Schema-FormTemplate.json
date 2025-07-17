@@ -1,0 +1,189 @@
+{
+  "definitions": {
+    "ActionButton": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isSubmit": {
+          "type": "boolean"
+        },
+        "iconClass": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "id": {
+          "type": "integer"
+        },
+        "eventTopic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ScheduledEventTemplate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "descendingOrder": {
+          "type": "integer"
+        },
+        "domainName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "satelliteData": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "eventTopic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schedule": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "domainName": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "comments": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "submitTitle": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contentSchemaNeedsReplacements": {
+      "type": "boolean"
+    },
+    "isVisibleToUsers": {
+      "type": "boolean"
+    },
+    "eventsOnly": {
+      "type": "boolean"
+    },
+    "revertToDefaultsOnSubmit": {
+      "type": "boolean"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "schedules": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/ScheduledEventTemplate"
+      }
+    },
+    "iconClass": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "actionButtons": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/ActionButton"
+      }
+    }
+  },
+  "required": [
+    "domainName",
+    "name",
+    "contentSchemaNeedsReplacements",
+    "isVisibleToUsers",
+    "tags"
+  ]
+}

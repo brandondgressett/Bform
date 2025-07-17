@@ -1,0 +1,131 @@
+{
+  "definitions": {
+    "TableSummarizationCommand": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isVisibleToUsers": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "displayMasterDetail": {
+          "type": "boolean"
+        },
+        "detailFormTemplate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "iconClass": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "takeSourceRows": {
+          "type": "integer"
+        },
+        "takeSummaryRows": {
+          "type": "integer"
+        },
+        "groupingBy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "summaryField": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "computation": {
+          "type": "string",
+          "enum": [
+            "Count",
+            "Mean",
+            "Median",
+            "Maximum",
+            "Minimum",
+            "Sum"
+          ]
+        },
+        "includeGroupRows": {
+          "type": "boolean"
+        },
+        "includeGroupTableQueryCommand": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "domainName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "summarization": {
+      "$ref": "#/definitions/TableSummarizationCommand"
+    }
+  }
+}

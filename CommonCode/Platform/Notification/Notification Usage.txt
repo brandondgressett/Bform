@@ -1,0 +1,68 @@
+﻿Purpose
+
+The notification service is able to send notifications via email, text, and voice calls through 
+Twilio and SendGrid APIs. It can also store user toast messages and notify web components to 
+tell the user about the toasts.
+
+A notification may include notification text for any or all of the four channels. 
+A notification is targeted to a notification contact, group of notification contacts, 
+or a list of notification contact groups.
+
+Each notification defines a severity level that indicates the importance of the notification, as
+well as specifications to suppress duplicates or consolidate notifications into a digest at
+the sender's request. 
+
+All notifications and notification digests are recorded into a notification audit repository,
+which may be queried by user to present past notifications sent to a user.
+
+Notification contacts describe contact details for each channel as well as rules for how to
+handle notifications. The rules divide the day into three shifts: morning, day, and evening. 
+Depending on notification severity and the shift of the day for the notification contact,
+the rules define, for each channel, whether to allow, suppress, or consolidate notification messages.
+
+
+Requesting Notifications
+
+A notification contact is required to send notifications, and the NotificationRepository implements
+the means to define them. The NotificationGroupRepository implements means to define groups of 
+notification contacts that may also be used as targets for notifications.
+
+The RequestNotification component can send notifications to the notification service for processing.
+It will require a NotificationMessage to specify the work to be done. A notification message requires 
+a subject even if the email channel isn't used. The subject is used to 
+decide which messages should be suppressed or consolidated. Notification messages can 
+define its target as notification groups, a notification group, or a single notification contact. 
+
+Each processed notification can be retrieved from the NotificationAudit Repository, including
+digests.
+
+
+
+Dependency Injection
+
+Dependent Services
+
+Notification depends on all of the dependency injection for the 
+Digest Consolidation and Duplicate Suppression services, as 
+described in their usage files.
+
+Dependency Components
+	Diagnostics
+		ILogger<T>
+		IApplicationAlert
+	Messaging
+		IMessageBusSpecifier
+		IMessagePublisher
+		IMessageListener
+
+Core Elements
+	INotificationCore -> TwilioNotificationCore
+	IRegulatedNotificationLogic -> RegulatedNotificationLogic
+	NotificationAuditRepository
+	NotificationContactRepository
+	NotificationGroupRepository
+	RequestNotification
+
+Hosted Services
+	NotificationService
+

@@ -1,0 +1,174 @@
+[
+  {
+    "templateName": "servicePlan",
+    "name": "Free Plan",
+    "tier": "free",
+    "description": "Perfect for getting started with basic features and limited resources",
+    "isActive": true,
+    "monthlyPrice": 0,
+    "annualPrice": 0,
+    "limits": {
+      "maxUsers": 3,
+      "maxWorkSets": 5,
+      "maxWorkItems": 50,
+      "maxFormsPerMonth": 100,
+      "maxStorageGB": 1,
+      "maxApiCallsPerDay": 1000,
+      "maxScheduledJobs": 2,
+      "maxReportsPerMonth": 10
+    },
+    "features": {
+      "customBranding": false,
+      "advancedReporting": false,
+      "apiAccess": false,
+      "customRules": false,
+      "multiTenancy": false,
+      "ssoIntegration": false,
+      "dataExport": true,
+      "emailNotifications": true,
+      "smsNotifications": false,
+      "webhooks": false,
+      "customFields": false,
+      "auditLog": false
+    },
+    "quotas": {
+      "emailCreditsPerMonth": 100,
+      "smsCreditsPerMonth": 0,
+      "aiCreditsPerMonth": 10
+    },
+    "support": {
+      "level": "community",
+      "responseTimeHours": 72,
+      "includedHours": 0
+    }
+  },
+  {
+    "templateName": "servicePlan",
+    "name": "Starter Plan",
+    "tier": "starter",
+    "description": "Great for small teams and growing businesses",
+    "isActive": true,
+    "monthlyPrice": 29,
+    "annualPrice": 290,
+    "limits": {
+      "maxUsers": 10,
+      "maxWorkSets": 25,
+      "maxWorkItems": 500,
+      "maxFormsPerMonth": 1000,
+      "maxStorageGB": 10,
+      "maxApiCallsPerDay": 10000,
+      "maxScheduledJobs": 10,
+      "maxReportsPerMonth": 100
+    },
+    "features": {
+      "customBranding": false,
+      "advancedReporting": false,
+      "apiAccess": true,
+      "customRules": false,
+      "multiTenancy": false,
+      "ssoIntegration": false,
+      "dataExport": true,
+      "emailNotifications": true,
+      "smsNotifications": false,
+      "webhooks": false,
+      "customFields": true,
+      "auditLog": false
+    },
+    "quotas": {
+      "emailCreditsPerMonth": 1000,
+      "smsCreditsPerMonth": 100,
+      "aiCreditsPerMonth": 100
+    },
+    "support": {
+      "level": "email",
+      "responseTimeHours": 24,
+      "includedHours": 0
+    }
+  },
+  {
+    "templateName": "servicePlan",
+    "name": "Professional Plan",
+    "tier": "professional",
+    "description": "Full-featured solution for established businesses",
+    "isActive": true,
+    "monthlyPrice": 99,
+    "annualPrice": 990,
+    "limits": {
+      "maxUsers": 50,
+      "maxWorkSets": 0,
+      "maxWorkItems": 0,
+      "maxFormsPerMonth": 10000,
+      "maxStorageGB": 100,
+      "maxApiCallsPerDay": 50000,
+      "maxScheduledJobs": 50,
+      "maxReportsPerMonth": 0
+    },
+    "features": {
+      "customBranding": true,
+      "advancedReporting": true,
+      "apiAccess": true,
+      "customRules": true,
+      "multiTenancy": false,
+      "ssoIntegration": true,
+      "dataExport": true,
+      "emailNotifications": true,
+      "smsNotifications": true,
+      "webhooks": true,
+      "customFields": true,
+      "auditLog": true
+    },
+    "quotas": {
+      "emailCreditsPerMonth": 10000,
+      "smsCreditsPerMonth": 1000,
+      "aiCreditsPerMonth": 5000
+    },
+    "support": {
+      "level": "priority",
+      "responseTimeHours": 4,
+      "includedHours": 2
+    }
+  },
+  {
+    "templateName": "servicePlan",
+    "name": "Enterprise Plan",
+    "tier": "enterprise",
+    "description": "Unlimited resources with dedicated support for large organizations",
+    "isActive": true,
+    "monthlyPrice": 499,
+    "annualPrice": 4990,
+    "limits": {
+      "maxUsers": 0,
+      "maxWorkSets": 0,
+      "maxWorkItems": 0,
+      "maxFormsPerMonth": 0,
+      "maxStorageGB": 0,
+      "maxApiCallsPerDay": 0,
+      "maxScheduledJobs": 0,
+      "maxReportsPerMonth": 0
+    },
+    "features": {
+      "customBranding": true,
+      "advancedReporting": true,
+      "apiAccess": true,
+      "customRules": true,
+      "multiTenancy": true,
+      "ssoIntegration": true,
+      "dataExport": true,
+      "emailNotifications": true,
+      "smsNotifications": true,
+      "webhooks": true,
+      "customFields": true,
+      "auditLog": true
+    },
+    "quotas": {
+      "emailCreditsPerMonth": 0,
+      "smsCreditsPerMonth": 0,
+      "aiCreditsPerMonth": 0
+    },
+    "support": {
+      "level": "dedicated",
+      "responseTimeHours": 1,
+      "includedHours": 10
+    }
+  }
+]

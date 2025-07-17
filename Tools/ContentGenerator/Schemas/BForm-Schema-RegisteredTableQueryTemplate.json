@@ -1,0 +1,304 @@
+{
+  "definitions": {
+    "ColumnFilter": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "field": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "TableQueryCommand": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "idFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "eqDateFilter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "ltDateFilter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "gtDateFilter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "dateTimeLine": {
+          "$ref": "#/definitions/TimeLineQuery"
+        },
+        "userFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workSetFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workItemFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "matchAnyTags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "matchAllTags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "ltNumericFilter": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "gtNumericFilter": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "eqNumericFilter": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ordering": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Date",
+            "DateDescending",
+            "Numeric",
+            "NumericDescending"
+          ]
+        },
+        "columnFilters": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/ColumnFilter"
+          }
+        }
+      }
+    },
+    "TimeFrame": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "timeFrameMinutes": {
+          "type": "integer"
+        },
+        "timeFrameHours": {
+          "type": "integer"
+        },
+        "timeFrameDays": {
+          "type": "integer"
+        },
+        "timeFrameMonths": {
+          "type": "integer"
+        }
+      }
+    },
+    "TimeLineQuery": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "begin": {
+          "$ref": "#/definitions/TimeQuery"
+        },
+        "end": {
+          "$ref": "#/definitions/TimeQuery"
+        }
+      }
+    },
+    "TimePoint": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "at": {
+          "type": "string",
+          "enum": [
+            "Now",
+            "Next5Minutes",
+            "ThisMinute",
+            "ThisHour",
+            "NextHour",
+            "Tomorrow",
+            "AtMidnight",
+            "NextWeek",
+            "NextMonth",
+            "FirstOfMonth",
+            "LastDayQuarter",
+            "NextYear",
+            "NextQuarterHour",
+            "NextQuarterDay",
+            "StartOfHour",
+            "PreviousYear",
+            "StartPreviousQuarter",
+            "Yesterday",
+            "TodayMidnight",
+            "StartOfWeek",
+            "LastMonth",
+            "FirstOfThisMonth",
+            "FirstOfLastMonth",
+            "LastOfThisMonth",
+            "LastDayPrevQuarter",
+            "FirstOfYear",
+            "StartOfQuarterHour",
+            "StartOfQuarterDay",
+            "StartOfFiveMinutes"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "enum": [
+            "UtcNow",
+            "Now",
+            "Today"
+          ]
+        },
+        "explicitFrom": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "TimeQuery": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "back": {
+          "$ref": "#/definitions/TimeFrame"
+        },
+        "forward": {
+          "$ref": "#/definitions/TimeFrame"
+        },
+        "point": {
+          "$ref": "#/definitions/TimePoint"
+        },
+        "explicitFrom": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "isUtc": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "domainName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "query": {
+      "$ref": "#/definitions/TableQueryCommand"
+    }
+  }
+}

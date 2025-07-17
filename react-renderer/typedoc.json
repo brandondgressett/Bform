@@ -1,0 +1,29 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/api",
+  "theme": "default",
+  "name": "@bformdomain/react-renderer",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": false,
+  "includeVersion": true,
+  "disableSources": false,
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Components",
+    "Renderers",
+    "Layout",
+    "Forms",
+    "Tables",
+    "Types",
+    "Utils",
+    "Plugins"
+  ],
+  "plugin": ["typedoc-plugin-markdown"],
+  "hideGenerator": true,
+  "navigationLinks": {
+    "GitHub": "https://github.com/yourusername/bformdomain-react-renderer",
+    "Tutorial": "../TUTORIAL.md"
+  }
+}

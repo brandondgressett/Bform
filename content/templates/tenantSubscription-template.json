@@ -1,0 +1,230 @@
+{
+  "id": "tenantSubscription",
+  "name": "Tenant Subscription",
+  "description": "Tracks tenant subscription to a service plan with usage metrics",
+  "category": "System",
+  "tags": ["billing", "subscription", "tenant", "usage"],
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["tenantId", "servicePlanId", "status", "startDate"],
+    "properties": {
+      "tenantId": {
+        "type": "string",
+        "title": "Tenant ID",
+        "description": "ID of the tenant this subscription belongs to"
+      },
+      "servicePlanId": {
+        "type": "string",
+        "title": "Service Plan ID",
+        "description": "ID of the subscribed service plan"
+      },
+      "status": {
+        "type": "string",
+        "title": "Status",
+        "enum": ["active", "suspended", "cancelled", "expired", "trial"],
+        "enumNames": ["Active", "Suspended", "Cancelled", "Expired", "Trial"]
+      },
+      "billingCycle": {
+        "type": "string",
+        "title": "Billing Cycle",
+        "enum": ["monthly", "annual"],
+        "enumNames": ["Monthly", "Annual"],
+        "default": "monthly"
+      },
+      "startDate": {
+        "type": "string",
+        "title": "Start Date",
+        "format": "date-time"
+      },
+      "endDate": {
+        "type": "string",
+        "title": "End Date",
+        "format": "date-time",
+        "description": "End date for trial or cancelled subscriptions"
+      },
+      "nextBillingDate": {
+        "type": "string",
+        "title": "Next Billing Date",
+        "format": "date-time"
+      },
+      "customLimits": {
+        "type": "object",
+        "title": "Custom Limits",
+        "description": "Override default plan limits for this tenant",
+        "properties": {
+          "maxUsers": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maxWorkSets": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maxWorkItems": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maxFormsPerMonth": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maxStorageGB": {
+            "type": "number",
+            "minimum": 0
+          },
+          "maxApiCallsPerDay": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "currentUsage": {
+        "type": "object",
+        "title": "Current Usage",
+        "description": "Current resource usage for this billing period",
+        "properties": {
+          "activeUsers": {
+            "type": "integer",
+            "title": "Active Users",
+            "minimum": 0,
+            "default": 0
+          },
+          "workSetCount": {
+            "type": "integer",
+            "title": "WorkSet Count",
+            "minimum": 0,
+            "default": 0
+          },
+          "workItemCount": {
+            "type": "integer",
+            "title": "Work Item Count",
+            "minimum": 0,
+            "default": 0
+          },
+          "formsThisMonth": {
+            "type": "integer",
+            "title": "Forms This Month",
+            "minimum": 0,
+            "default": 0
+          },
+          "storageUsedGB": {
+            "type": "number",
+            "title": "Storage Used (GB)",
+            "minimum": 0,
+            "default": 0
+          },
+          "apiCallsToday": {
+            "type": "integer",
+            "title": "API Calls Today",
+            "minimum": 0,
+            "default": 0
+          },
+          "scheduledJobCount": {
+            "type": "integer",
+            "title": "Scheduled Jobs",
+            "minimum": 0,
+            "default": 0
+          },
+          "reportsThisMonth": {
+            "type": "integer",
+            "title": "Reports This Month",
+            "minimum": 0,
+            "default": 0
+          }
+        }
+      },
+      "quotaUsage": {
+        "type": "object",
+        "title": "Quota Usage",
+        "description": "Usage of monthly quotas",
+        "properties": {
+          "emailCreditsUsed": {
+            "type": "integer",
+            "title": "Email Credits Used",
+            "minimum": 0,
+            "default": 0
+          },
+          "smsCreditsUsed": {
+            "type": "integer",
+            "title": "SMS Credits Used",
+            "minimum": 0,
+            "default": 0
+          },
+          "aiCreditsUsed": {
+            "type": "integer",
+            "title": "AI Credits Used",
+            "minimum": 0,
+            "default": 0
+          }
+        }
+      },
+      "usageHistory": {
+        "type": "array",
+        "title": "Usage History",
+        "description": "Historical usage snapshots",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "period": {
+              "type": "string",
+              "description": "Billing period (e.g., '2024-01')"
+            },
+            "metrics": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "alerts": {
+        "type": "array",
+        "title": "Usage Alerts",
+        "items": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["limit_warning", "limit_exceeded", "quota_low", "quota_exceeded"]
+            },
+            "resource": {
+              "type": "string"
+            },
+            "threshold": {
+              "type": "number"
+            },
+            "current": {
+              "type": "number"
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    }
+  },
+  "uiSchema": {
+    "tenantId": {
+      "ui:readonly": true
+    },
+    "currentUsage": {
+      "ui:readonly": true,
+      "ui:title": "Current Resource Usage"
+    },
+    "quotaUsage": {
+      "ui:readonly": true,
+      "ui:title": "Current Quota Usage"
+    },
+    "usageHistory": {
+      "ui:widget": "hidden"
+    }
+  }
+}

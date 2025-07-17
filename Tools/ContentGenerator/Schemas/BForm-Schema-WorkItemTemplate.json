@@ -1,0 +1,451 @@
+{
+  "definitions": {
+    "JsonPathWinnow": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "jsonPath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "errorIfNoMatch": {
+          "type": "boolean"
+        },
+        "summarize": {
+          "type": "string",
+          "enum": [
+            null,
+            "Min",
+            "Max",
+            "Sum",
+            "Mean",
+            "Median",
+            "Count"
+          ]
+        },
+        "asSub": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "appendTo": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "JsonWinnower": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "winnows": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/JsonPathWinnow"
+          }
+        },
+        "appendixProperty": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "initializationProperty": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "orderBy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "descending": {
+          "type": "boolean"
+        },
+        "take": {
+          "type": "integer"
+        },
+        "initialization": {}
+      }
+    },
+    "JSub": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "targetJsonPath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceJsonPath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceJsonValue": {}
+      }
+    },
+    "PriorityTemplate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isDefault": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ProcessInstanceCommand": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "namedContent": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "vars": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "initialTags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "preProcess": {
+          "$ref": "#/definitions/JsonWinnower"
+        },
+        "substitutions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/JSub"
+          }
+        }
+      }
+    },
+    "SectionTemplate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "descendingOrder": {
+          "type": "integer"
+        },
+        "renderer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isCreateOnNew": {
+          "type": "boolean"
+        },
+        "isCreateOnDemand": {
+          "type": "boolean"
+        },
+        "isEntityList": {
+          "type": "boolean"
+        },
+        "entityTemplateName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "creationData": {},
+        "newInstanceProcess": {
+          "$ref": "#/definitions/ProcessInstanceCommand"
+        }
+      }
+    },
+    "StatusTemplate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "statusType": {
+          "type": "string",
+          "enum": [
+            "OpenUnresolved",
+            "Resolved"
+          ]
+        },
+        "isListedActive": {
+          "type": "boolean"
+        },
+        "isListedInactive": {
+          "type": "boolean"
+        },
+        "isDefault": {
+          "type": "boolean"
+        }
+      }
+    },
+    "TimeFrame": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "timeFrameMinutes": {
+          "type": "integer"
+        },
+        "timeFrameHours": {
+          "type": "integer"
+        },
+        "timeFrameDays": {
+          "type": "integer"
+        },
+        "timeFrameMonths": {
+          "type": "integer"
+        }
+      }
+    },
+    "TriageTemplate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "triageId": {
+          "type": "integer"
+        },
+        "userTag": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isInitialAssigneeOnNew": {
+          "type": "boolean"
+        },
+        "forceStatus": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "domainName": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "comments": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "isVisibleToUsers": {
+      "type": "boolean"
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "statusTemplates": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/StatusTemplate"
+      }
+    },
+    "triageTemplates": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/TriageTemplate"
+      }
+    },
+    "priorityTemplates": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/PriorityTemplate"
+      }
+    },
+    "sectionTemplates": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/SectionTemplate"
+      }
+    },
+    "isGroomable": {
+      "type": "boolean"
+    },
+    "groomPeriod": {
+      "$ref": "#/definitions/TimeFrame"
+    },
+    "groomBehavior": {
+      "type": "string",
+      "enum": [
+        "FromCreated",
+        "FromModified",
+        "FromResolved"
+      ]
+    },
+    "allowComments": {
+      "type": "boolean"
+    },
+    "allowFileAttachments": {
+      "type": "boolean"
+    },
+    "allowDeletion": {
+      "type": "boolean"
+    },
+    "allowLinks": {
+      "type": "boolean"
+    },
+    "allowBookmarks": {
+      "type": "boolean"
+    },
+    "trackStatus": {
+      "type": "boolean"
+    },
+    "trackAssignee": {
+      "type": "boolean"
+    },
+    "trackPriority": {
+      "type": "boolean"
+    },
+    "trackEventHistory": {
+      "type": "boolean"
+    },
+    "trackUnresolvedLength": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "domainName",
+    "name",
+    "descendingOrder",
+    "isVisibleToUsers"
+  ]
+}

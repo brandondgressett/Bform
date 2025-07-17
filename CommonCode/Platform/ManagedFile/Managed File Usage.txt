@@ -1,0 +1,35 @@
+﻿
+Purpose:
+
+The managed file system provides services for file uploads and downloads attached to entities in your application. This includes
+services for handling and storing file contents, but also tracks file metadata in a repository. The metadata includes file type, size, 
+user interactions, creation date, etc. The system also covers auditing actions on your files, and optional grooming of old files.
+
+The ManagedFileLogic component provides an interface to upload, download, list, delete, and update file metadata and content, and is intended
+as the primary interface for using the system. It also provides methods to access audits of actions performed on the files.
+
+The ManagedFileGroomingService, if registered with dependency injection, can delete old files that you have marked as candidates for file grooming,
+but this feature is optional.
+
+An implemention for file contents storage that uses the physical file system directly is provided in PhysicalFilePersistence, and configurable 
+through PhysicalFilePersistenceOptions. In order to use it securely, create a folder that disallows all execution permissions. 
+
+
+
+Core Elements:
+	ManagedFileLogic
+	PhysicalFilePersistence
+	ManagedFileAuditRepository
+	FileRecordRepository
+Hosted Services:
+	ManagedFileGroomingService
+Models:
+	ManagedFile
+	ManagedFileAudit
+	ManagedFileViewModel
+	PhysicalFilePersistenceOptions
+Repositories:
+	FileRecordRepository
+	ManagedFileAuditRepository
+
+Dependency Injection

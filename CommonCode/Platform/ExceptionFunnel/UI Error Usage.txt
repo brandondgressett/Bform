@@ -1,0 +1,24 @@
+﻿Purpose:
+
+UIError translates programese exceptions into readable messages. When an exception is thrown UIError sorts the exception into a Funnel. Each funnel is
+registed to an exception by keywords provided to the funnel when the exception is registed. To register a new funnel call UIExceptionFunnel.Register().
+When an exception is funneled UIExceptionFunnel provides details on the exception what file it was thrown from ,what line number, when it was thrown, and the stack
+trace of the exception.
+
+Usage:
+
+Usage in UI (Eg, web controllers)
+Register new exceptions using UIExceptionFunnel.Register().
+UIExcetionFunnelRegistery Provides only one useful function CreateCombinedFunnel which takes a list of funnels to combine.
+
+
+Extending Additional Exceptions
+To register a new Exception with the Funnels a new instance of UIErrorTemplate must be made
+for the new exception UIErrorTemplate contains: 
+	(End-User-Friendly Message, ExceptionType, Keywords(Key words/phrases found commonly in the exception), RequiresAll(if all of the keywords are required))
+
+When capturing an exception call UIExceptionFunnel.Funnel(), or call FunnelAlert() to record how many exceptions
+of the same type have come in, and if should you raise the severity base on that.
+
+
+

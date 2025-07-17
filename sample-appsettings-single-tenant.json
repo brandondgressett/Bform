@@ -1,0 +1,66 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "BFormDomain.CommonCode.Platform.Tenancy": "Debug"
+    }
+  },
+  "MongoDB": {
+    "ConnectionString": "mongodb://localhost:27017",
+    "DatabaseName": "BForm",
+    "DefaultPageSize": 50,
+    "FaultLimit": 15,
+    "MaxConnectionPoolSize": 100,
+    "MinConnectionPoolSize": 10,
+    "CommandTimeoutMs": 30000,
+    "EnableQueryLogging": false,
+    "UseSsl": false
+  },
+  "MultiTenancy": {
+    "Enabled": false,
+    "AutoCreateGlobalTenant": true,
+    "GlobalTenantId": "00000000-0000-0000-0000-000000000001",
+    "GlobalTenantName": "global",
+    "GlobalTenantDisplayName": "Global Tenant",
+    "ConnectionProvider": "Local",
+    "RequireExplicitTenant": false,
+    "ValidateTenantExistence": false,
+    "TenantClaimName": "tenant_id",
+    "TenantNameClaimName": "tenant_name",
+    "TenantHeaderName": "X-Tenant-Id",
+    "AllowTenantSwitchingViaHeaders": false,
+    "ConnectionCacheDurationMinutes": 15
+  },
+  "Storage": {
+    "Provider": "FileSystem",
+    "BasePath": "./storage",
+    "EnableVersioning": true,
+    "MaxVersionCount": 10,
+    "EnableSoftDelete": true,
+    "SoftDeleteRetentionDays": 30,
+    "RequestTimeoutSeconds": 300,
+    "MaxRetryAttempts": 3,
+    "EnableCaching": true,
+    "CacheExpirationMinutes": 60
+  },
+  "MessageBus": {
+    "Type": "inmemory"
+  },
+  "Quartz": {
+    "SchedulerName": "BFormScheduler",
+    "DatabaseName": "BForm",
+    "CollectionPrefix": "quartz_",
+    "ThreadCount": 5,
+    "EnableClustering": false,
+    "ClusterCheckinInterval": 20000,
+    "MisfireThreshold": 60000,
+    "HealthCheck": {
+      "MaxThreadPoolUsage": 0.8,
+      "CheckMisfiredJobs": true,
+      "MaxMisfiredJobs": 10,
+      "MisfireThresholdSeconds": 300
+    }
+  },
+  "AllowedHosts": "*"
+}

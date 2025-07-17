@@ -1,0 +1,349 @@
+[
+  {
+    "id": "sp-check-user-limit",
+    "name": "Check User Creation Limit",
+    "description": "Validates service plan limits before creating a new user",
+    "isActive": true,
+    "trigger": {
+      "eventType": "BeforeUserCreate",
+      "filter": {}
+    },
+    "actions": [
+      {
+        "comment": "Check if tenant can add more users",
+        "invoke": {
+          "actionName": "CheckServicePlanLimit",
+          "args": {
+            "resourceType": "users",
+            "incrementAmount": 1,
+            "failureAction": "block",
+            "customMessage": "User limit reached. Please upgrade your plan to add more users."
+          },
+          "resultProperty": "userLimitCheck"
+        }
+      }
+    ],
+    "tags": ["service-plan", "limits", "users"]
+  },
+  {
+    "id": "sp-track-user-creation",
+    "name": "Track User Creation",
+    "description": "Increments user count after successful creation",
+    "isActive": true,
+    "trigger": {
+      "eventType": "UserCreated",
+      "filter": {}
+    },
+    "actions": [
+      {
+        "comment": "Increment active users metric",
+        "invoke": {
+          "actionName": "IncrementUsageMetric",
+          "args": {
+            "metricType": "users",
+            "incrementAmount": 1,
+            "checkQuota": false
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "usage", "users"]
+  },
+  {
+    "id": "sp-check-workset-limit",
+    "name": "Check WorkSet Creation Limit",
+    "description": "Validates service plan limits before creating a workset",
+    "isActive": true,
+    "trigger": {
+      "eventType": "BeforeWorkSetCreate",
+      "filter": {}
+    },
+    "actions": [
+      {
+        "comment": "Check workset limit",
+        "invoke": {
+          "actionName": "CheckServicePlanLimit",
+          "args": {
+            "resourceType": "worksets",
+            "incrementAmount": 1,
+            "failureAction": "block",
+            "customMessage": "WorkSet limit reached. Upgrade to Professional plan for unlimited WorkSets."
+          },
+          "resultProperty": "worksetLimitCheck"
+        }
+      }
+    ],
+    "tags": ["service-plan", "limits", "worksets"]
+  },
+  {
+    "id": "sp-check-form-limit",
+    "name": "Check Monthly Form Submission Limit",
+    "description": "Validates form submission quota",
+    "isActive": true,
+    "trigger": {
+      "eventType": "BeforeFormSubmit",
+      "filter": {}
+    },
+    "actions": [
+      {
+        "comment": "Check monthly form submission limit",
+        "invoke": {
+          "actionName": "CheckServicePlanLimit",
+          "args": {
+            "resourceType": "forms",
+            "incrementAmount": 1,
+            "failureAction": "block",
+            "customMessage": "Monthly form submission limit reached. Please wait until next month or upgrade your plan."
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "limits", "forms"]
+  },
+  {
+    "id": "sp-track-form-submission",
+    "name": "Track Form Submission",
+    "description": "Increments form submission counter",
+    "isActive": true,
+    "trigger": {
+      "eventType": "FormSubmitted",
+      "filter": {
+        "eventData.status": "success"
+      }
+    },
+    "actions": [
+      {
+        "comment": "Increment forms submitted this month",
+        "invoke": {
+          "actionName": "IncrementUsageMetric",
+          "args": {
+            "metricType": "forms",
+            "incrementAmount": 1,
+            "checkQuota": false
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "usage", "forms"]
+  },
+  {
+    "id": "sp-check-storage-limit",
+    "name": "Check Storage Limit on File Upload",
+    "description": "Validates storage limits before file upload",
+    "isActive": true,
+    "trigger": {
+      "eventType": "BeforeFileUpload",
+      "filter": {}
+    },
+    "actions": [
+      {
+        "comment": "Calculate file size in MB",
+        "appendBefore": [
+          {
+            "expression": "Math.ceil(eventData.fileSizeBytes / 1048576)",
+            "resultProperty": "fileSizeMB"
+          }
+        ],
+        "invoke": {
+          "actionName": "CheckServicePlanLimit",
+          "args": {
+            "resourceType": "storage",
+            "incrementAmount": "{{fileSizeMB}}",
+            "failureAction": "block",
+            "customMessage": "Storage limit exceeded. Please delete some files or upgrade your plan for more storage."
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "storage", "files"]
+  },
+  {
+    "id": "sp-enforce-email-quota",
+    "name": "Enforce Email Notification Quota",
+    "description": "Checks and tracks email credit usage",
+    "isActive": true,
+    "trigger": {
+      "eventType": "BeforeEmailSend",
+      "filter": {}
+    },
+    "actions": [
+      {
+        "comment": "Count recipients",
+        "appendBefore": [
+          {
+            "expression": "eventData.recipients?.length || 1",
+            "resultProperty": "recipientCount"
+          }
+        ],
+        "invoke": {
+          "actionName": "CheckServicePlanLimit",
+          "args": {
+            "resourceType": "email",
+            "incrementAmount": "{{recipientCount}}",
+            "failureAction": "block"
+          },
+          "resultProperty": "emailQuotaCheck"
+        }
+      },
+      {
+        "comment": "Track email usage if allowed",
+        "invoke": {
+          "actionName": "IncrementUsageMetric",
+          "conditionalExpression": "emailQuotaCheck.allowed",
+          "args": {
+            "metricType": "email",
+            "incrementAmount": "{{recipientCount}}",
+            "checkQuota": true,
+            "createAlert": true
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "quota", "email", "notifications"]
+  },
+  {
+    "id": "sp-feature-gate-webhooks",
+    "name": "Feature Gate - Webhooks",
+    "description": "Blocks webhook creation if feature not enabled",
+    "isActive": true,
+    "trigger": {
+      "eventType": "BeforeWebhookCreate",
+      "filter": {}
+    },
+    "actions": [
+      {
+        "comment": "Check if webhooks feature is enabled",
+        "invoke": {
+          "actionName": "CheckFeatureAccess",
+          "args": {
+            "featureName": "webhooks",
+            "failureMessage": "Webhooks are not available in your current plan. Upgrade to Professional or higher."
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "features", "webhooks"]
+  },
+  {
+    "id": "sp-feature-gate-advanced-reports",
+    "name": "Feature Gate - Advanced Reporting",
+    "description": "Blocks advanced report generation if feature not enabled",
+    "isActive": true,
+    "trigger": {
+      "eventType": "BeforeReportGenerate",
+      "filter": {
+        "eventData.reportType": "advanced"
+      }
+    },
+    "actions": [
+      {
+        "comment": "Check if advanced reporting is enabled",
+        "invoke": {
+          "actionName": "CheckFeatureAccess",
+          "args": {
+            "featureName": "advancedReporting",
+            "failureMessage": "Advanced reporting requires Professional plan or higher."
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "features", "reporting"]
+  },
+  {
+    "id": "sp-reset-daily-metrics",
+    "name": "Reset Daily Usage Metrics",
+    "description": "Resets daily metrics at midnight UTC",
+    "isActive": true,
+    "trigger": {
+      "eventType": "ScheduledEvent",
+      "filter": {
+        "eventData.jobName": "ResetDailyMetrics"
+      }
+    },
+    "actions": [
+      {
+        "comment": "Reset API calls counter",
+        "invoke": {
+          "actionName": "ExecuteServiceMethod",
+          "args": {
+            "service": "ServicePlanManager",
+            "method": "ResetDailyMetricsAsync"
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "scheduled", "maintenance"]
+  },
+  {
+    "id": "sp-reset-monthly-metrics",
+    "name": "Reset Monthly Usage Metrics",
+    "description": "Resets monthly metrics and quotas on first day of month",
+    "isActive": true,
+    "trigger": {
+      "eventType": "ScheduledEvent",
+      "filter": {
+        "eventData.jobName": "ResetMonthlyMetrics"
+      }
+    },
+    "actions": [
+      {
+        "comment": "Reset monthly counters and quotas",
+        "invoke": {
+          "actionName": "ExecuteServiceMethod",
+          "args": {
+            "service": "ServicePlanManager",
+            "method": "ResetMonthlyMetricsAsync"
+          }
+        }
+      },
+      {
+        "comment": "Generate usage reports for previous month",
+        "invoke": {
+          "actionName": "CreateReport",
+          "args": {
+            "templateName": "monthly-usage-report",
+            "includePreviousMonth": true
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "scheduled", "maintenance", "reporting"]
+  },
+  {
+    "id": "sp-usage-alert-80-percent",
+    "name": "Usage Alert at 80% Threshold",
+    "description": "Creates alert when resource usage reaches 80%",
+    "isActive": true,
+    "trigger": {
+      "eventType": "UsageMetricUpdated",
+      "filter": {
+        "eventData.percentUsed": { "$gte": 80, "$lt": 100 }
+      }
+    },
+    "actions": [
+      {
+        "comment": "Create usage warning notification",
+        "invoke": {
+          "actionName": "CreateNotification",
+          "args": {
+            "type": "usage_warning",
+            "title": "Resource Usage Warning",
+            "message": "{{eventData.resourceType}} usage has reached {{eventData.percentUsed}}% of your plan limit.",
+            "priority": "medium",
+            "actions": [
+              {
+                "label": "View Usage",
+                "url": "/account/usage"
+              },
+              {
+                "label": "Upgrade Plan",
+                "url": "/account/upgrade"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "tags": ["service-plan", "alerts", "usage"]
+  }
+]

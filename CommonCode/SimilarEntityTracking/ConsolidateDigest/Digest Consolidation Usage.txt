@@ -1,0 +1,129 @@
+﻿Purpose
+
+The consolidation service is helpful when you have a large number of entities 
+(eg, alerts, notifications with outgoing emails and texts) that are created or generated,
+but taken as a whole are too much information to process by either the user or the application.
+
+The digest consolidation service handles this by creating a digest of these entities together during
+a given time period, and then compiling and sending that digest to listening clients. Items enter
+a digest if they are deemed similar, which is controlled by comparison of selected properties.
+
+A digest is regulated with the creation of the first digest item that describes how long to
+consolidate, where to send the results, and parameters regulating the size of the digest.
+
+Digest size is controlled by head and tail size limits. The head limit describes how many items arriving first are
+to be listed in the digest. If the head is full, the tail limit takes the most recent items after the head, 
+up to the limit. Head and tail items together (without overlap) make up the full digest.
+
+Digestible items should be json serializable, and the serialization behavior can be controlled using 
+property attributes in the Newtonsoft.Json namespace. Helper classes described below 
+aid in requesting consolidation and receiving the digest results.
+
+Requesting Consolidation
+
+Create a digest item using Digestible<T>. The constructor for this class can wrap your data item
+and prepare it for consolidation. The resulting Digestible<T> object may be used with the OrderConsolidateToDigest 
+service to enter it into the consolidation service. The first item to enter the digest defines
+the behavior of the digest. 
+
+Use the OrderConsolidateToDigest service by injecting it into your client. The simple ConsolidateIntoDigest() method
+will begin entry into the service.
+
+Receiving Digests
+
+Use the DigestReceiver<T> service by injecting into your client. After initializing the instance with the 
+Initialize() method, the DigestReady event will trigger whenever the consolidation service
+finishes a digest for types T.
+
+
+Dependency Injection
+
+Dependent Components
+	Diagnostics
+		ILogger<T>
+		IApplicationAlert
+	Messaging
+		IMessageBusSpecifier
+		IMessagePublisher
+		IMessageListener
+Core Elements
+	DigestReceiver<T>
+	ConsolidatedDigestRepository
+	IConsolidationCore->ConsolidationCore<T>
+	OrderConsolidateToDigest
+Hosted Services
+	ConsolidationService<T>
+	DigestDistributionService
+
+
+
+
+
+
+
+
+
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                                                                                                                                                                                                    │
+│                                                                                                                                                                                                                                                                                    │
+│                                                                                                                                                                                                                                                                                    │
+│                                                                                                                            Consolidate Digest                                                                                                                                      │
+│                                                                                                                                                                                                                                                                                    │
+│                                                                                                                                                                                                                                                                                    │
+├─────────────────────────────────────┬─┬─────────────────────────────────────┬─┬───────────────────────────────────┬─┬─────────────────────────────────────┬─┬──────────────────────────────────────┬─┬────────────────────────────────────┬─┬──────────────────────────────────────┤
+│                                     │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+│          Client                     │ │    ConsolidateToDigestOrder         │ │       ConsolidationService        │ │          ConsolidateCore            │ │            DigestModel               │ │     DigestDistributionService      │ │        DigestReceiver                │
+│ NEEDS                               │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+│ ConsolidateToDigestOrder            │ │ ┌─────────────────────────────┐     │ │  ┌──────────────────────────┐     │ │ ┌────────────────────────┐          │ │ ┌───────────────────────────┐        │ │ ┌────────────────────────────────┐ │ │  ┌───────────────────────────┐       │
+│ DigestReceiver                      │ │ │ConsolidateIntoDigestAsync   │     │ │  │ProcessMessage()          │     │ │ │ConsolidateAppendAsync()│          │ │ │SpilloverAppend()          │        │ │ │DoWork()                        │ │ │  │ProcessReceived()          │       │
+│ ─────────┬─────┬─────────────────   │ │ │  Uses message bus publisher │     │ │  │  Passes each item from   │     │ │ │  Determines if related │          │ │ │  Accepts head an tail     │        │ │ │  Uses message bus publisher    │ │ │  │  For every item received  │       │
+│          ├─────┤                    │ │ │  to send message for        │     │ │  │  message bus listener    │     │ │ │  digest already exists │          │ │ │  parameters and a mongo   │        │ │ │  to accept digest item from    │ │ │  │  by message bus listener  │       │
+│          │START│                    │ │ │  ConsolidateService to      ├─────┼─┼─►│  into                    │     │ │ │  and if it doesn't then├──────────┼─┤►│  prepared version of item │        │ │ │  mongo database and send them  │ │ │  │  call DigestReady event   │       │
+│          ├─────┤                    │ │ │  listen for.                │     │ │  │  ConsolidationCore.      ├─────┼─┤►│  it creates one. Then  │          │ │ │  and passes it into       │        │ │ │  to message bus for            │ │ │  │  defined by client        │       │
+│ ┌────────┴─────┴────────────────┐   │ │ └─────────────────────────────┘     │ │  │  ConsolidateAppendAsync()│     │ │ │  passes item into      │          │ │ │  MaybeAppendEntry()       │        │ │ │  DigestReciever to listen for  │ │ │  └────────────┬──────────────┘       │
+│ │ConsolidateToDigestOrder.      │   │ │           ▲                         │ │  └──────────────────────────┘     │ │ │  DigestModel.          │          │ │ └─────────────┬─────────────┘        │ │ │                                │ │ │               │                      │
+│ │   ConsolidateIntoDigestAsync()├───┼─┼───────────┘                         │ │                                   │ │ │  SpilloverAppend()     │          │ │               │                      │ │ └────────────────────────────────┘ │ │               │                      │
+│ └───────────────────────────────┘   │ │                                     │ │                                   │ │ ├──to┼append┼item┼to─────┤          │ │               │                      │ │              ▲                     │ │               │                      │
+│                                     │ │                                     │ │                                   │ │ │  list for adding to    │          │ │               ▼                      │ │              │                     │ │               │                      │
+│ ┌───────────────────────────────┐   │ │                                     │ │                                   │ │ │  mongo database        │          │ │ ┌────────────────────────────────┐   │ │              │                     │ │               │                      │
+│ │EXAMPLE DIGEST FUNCTIONS       │   │ │                                     │ │                                   │ │ └─────────────┬──────────┘▲         │ │ │MaybeAppendEntry()              │   │ │              │                     │ │               │                      │
+│ │TextDigest()                   │   │ │                                     │ │                                   │ │               │           └─────────┼─┼─┤  If list will not pass         │   │ │              │                     │ │               │                      │
+│ │                               │   │ │                                     │ │                                   │ │               │                     │ │ │  limit by appending item       │   │ │              │                     │ │               │                      │
+│ │EmailDigest()                  │   │ │                                     │ │                                   │ │               │                     │ │ │  it will append the item to the│   │ │              │                     │ │               │                      │
+│ │                               │   │ │                                     │ │                                   │ │               │                     │ │ │  list                          │   │ │              │                     │ │               │                      │
+│ │CallDigest()                   │   │ │                                     │ │                                   │ │               │                     │ │ └────────────────────────────────┘   │ │              │                     │ │               │                      │
+│ │                               │   │ │                                     │ │                                   │ │               │                     │ │                                      │ │              │                     │ │               │                      │
+│ │ToastDigest()                  │   │ │                                     │ │                                   │ │               │                     │ │                                      │ │              │                     │ │               │                      │
+│ └───────────────────────────────┘   │ │                                     │ │                                   │ │               └─────────────────────┼─┼──────────────────────────────────────┼─┼──────────────┘                     │ │               │                      │
+│              ▲                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+│              │                      │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+├┬─────────────┴──────────────────┐   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+││Define Function                 │   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+││  DigestReceiver_DigestReady()  │   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+││    In Initialize function set  │   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+││    DigestReceiver.DigestReady  │   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │               │                      │
+││    to this function. Use to    │◄──┼─┼─────────────────────────────────────┼─┼───────────────────────────────────┼─┼─────────────────────────────────────┼─┼──────────────────────────────────────┼─┼────────────────────────────────────┼─┼───────────────┘                      │
+││    send messages of any type   │   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+││    like calls, texts, emails,  │   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+││    and toasts in example above │   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+├┴────────────────────────────────┘   │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+│                                     │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+│                                     │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+│                                     │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+│                                     │ │                                     │ │                                   │ │                                     │ │                                      │ │                                    │ │                                      │
+└─────────────────────────────────────┘ └─────────────────────────────────────┘ └───────────────────────────────────┘ └─────────────────────────────────────┘ └──────────────────────────────────────┘ └────────────────────────────────────┘ └──────────────────────────────────────┘

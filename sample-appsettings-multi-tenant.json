@@ -1,0 +1,119 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning",
+      "BFormDomain.CommonCode.Platform.Tenancy": "Debug"
+    }
+  },
+  "MongoDB": {
+    "ConnectionString": "mongodb://localhost:27017",
+    "DatabaseName": "BFormManagement",
+    "DefaultPageSize": 50,
+    "FaultLimit": 15,
+    "MaxConnectionPoolSize": 100,
+    "MinConnectionPoolSize": 10,
+    "CommandTimeoutMs": 30000,
+    "EnableQueryLogging": false,
+    "UseSsl": true
+  },
+  "MultiTenancy": {
+    "Enabled": true,
+    "AutoCreateGlobalTenant": true,
+    "GlobalTenantId": "00000000-0000-0000-0000-000000000001",
+    "GlobalTenantName": "global",
+    "GlobalTenantDisplayName": "Global Management Tenant",
+    "ConnectionProvider": "Cached",
+    "RequireExplicitTenant": true,
+    "DefaultTenantId": null,
+    "ValidateTenantExistence": true,
+    "TenantClaimName": "tenant_id",
+    "TenantNameClaimName": "tenant_name", 
+    "TenantHeaderName": "X-Tenant-Id",
+    "AllowTenantSwitchingViaHeaders": false,
+    "ConnectionCacheDurationMinutes": 15,
+    "AdditionalSettings": {
+      "MaxTenantsPerUser": 5,
+      "EnableTenantMetrics": true,
+      "TenantConnectionPooling": true
+    }
+  },
+  "Storage": {
+    "Provider": "AzureBlob",
+    "ConnectionString": "DefaultEndpointsProtocol=https;AccountName=yourstorageaccount;AccountKey=yourkey;EndpointSuffix=core.windows.net",
+    "UseManagedIdentity": false,
+    "ServiceEndpoint": "https://yourstorageaccount.blob.core.windows.net",
+    "DefaultAccessTier": "Cool",
+    "EnableVersioning": true,
+    "MaxVersionCount": 10,
+    "EnableSoftDelete": true,
+    "SoftDeleteRetentionDays": 30,
+    "RequestTimeoutSeconds": 300,
+    "MaxRetryAttempts": 3,
+    "EnableCaching": true,
+    "CacheExpirationMinutes": 60,
+    "AdditionalSettings": {
+      "EnableMetrics": true,
+      "TenantIsolationLevel": "Container"
+    }
+  },
+  "MessageBus": {
+    "Type": "rabbitmq",
+    "RabbitMQ": {
+      "HostName": "localhost",
+      "Port": 5672,
+      "UserName": "guest",
+      "Password": "guest",
+      "VirtualHost": "/",
+      "ExchangeName": "bform.events",
+      "EnableSsl": false,
+      "RequestedHeartbeat": 60,
+      "NetworkRecoveryInterval": 10,
+      "AutomaticRecoveryEnabled": true
+    }
+  },
+  "Quartz": {
+    "SchedulerName": "BFormMultiTenantScheduler",
+    "DatabaseName": "BFormQuartz",
+    "CollectionPrefix": "quartz_",
+    "ThreadCount": 10,
+    "EnableClustering": true,
+    "ClusterCheckinInterval": 20000,
+    "MisfireThreshold": 60000,
+    "HealthCheck": {
+      "MaxThreadPoolUsage": 0.8,
+      "CheckMisfiredJobs": true,
+      "MaxMisfiredJobs": 20,
+      "MisfireThresholdSeconds": 300
+    }
+  },
+  "ConnectionStrings": {
+    "DefaultTenantDatabase": "mongodb://tenant-default:27017",
+    "DefaultTenantStorage": "filesystem:/app/storage/tenants"
+  },
+  "TenantExamples": {
+    "Comment": "Example tenant configurations - remove in production",
+    "TenantA": {
+      "DatabaseConnectionString": "mongodb://tenant-a-cluster:27017",
+      "DatabaseName": "TenantA_Production",
+      "StorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=tenanta;AccountKey=key;EndpointSuffix=core.windows.net",
+      "StorageContainerPrefix": "tenant-a"
+    },
+    "TenantB": {
+      "DatabaseConnectionString": "mongodb://tenant-b-cluster:27017", 
+      "DatabaseName": "TenantB_Production",
+      "StorageConnectionString": "filesystem:/mnt/tenant-b-storage",
+      "StorageContainerPrefix": "tenant-b"
+    }
+  },
+  "Authentication": {
+    "Comment": "JWT settings for multi-tenant authentication",
+    "JwtBearer": {
+      "Authority": "https://your-auth-provider.com",
+      "Audience": "bform-api",
+      "RequireHttpsMetadata": true,
+      "ClockSkew": "00:01:00"
+    }
+  },
+  "AllowedHosts": "*"
+}

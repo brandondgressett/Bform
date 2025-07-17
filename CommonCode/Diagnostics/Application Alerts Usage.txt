@@ -1,0 +1,4 @@
+﻿You won't have any bugs anymore, if you just stop writing code.
+
+But if you insist ...
+

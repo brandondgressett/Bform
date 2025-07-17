@@ -1,0 +1,4 @@
+﻿IApplicationPlatformContent -- used to access content that drives the application
+
+IContentDomainSource -- each domain of content defines an implementation to inform the 
+content system about how to load and validate this content.

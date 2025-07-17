@@ -1,0 +1,347 @@
+{
+  "definitions": {
+    "CreatableWorkItem": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "templateName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "userCreatable": {
+          "type": "boolean"
+        },
+        "createOnInitialization": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "InitialViewData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "workItemAnyTags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "attachedEntityAnyTags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "limitMatch": {
+          "type": "integer"
+        },
+        "descendingOrder": {
+          "type": "integer"
+        },
+        "grouping": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ScheduledEventTemplate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "descendingOrder": {
+          "type": "integer"
+        },
+        "domainName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "satelliteData": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "eventTopic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schedule": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "TimeFrame": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "timeFrameMinutes": {
+          "type": "integer"
+        },
+        "timeFrameHours": {
+          "type": "integer"
+        },
+        "timeFrameDays": {
+          "type": "integer"
+        },
+        "timeFrameMonths": {
+          "type": "integer"
+        }
+      }
+    },
+    "ViewRowDef": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "WorkSetMenuItem": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "descendingOrder": {
+          "type": "integer"
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "iconClass": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "isDefaultMenuItem": {
+          "type": "boolean"
+        },
+        "isVisible": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "domainName": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "comments": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "isVisibleToUsers": {
+      "type": "boolean"
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "home": {
+      "type": "string",
+      "enum": [
+        "List",
+        "Menu"
+      ]
+    },
+    "menuItem": {
+      "$ref": "#/definitions/WorkSetMenuItem"
+    },
+    "notificationGroupTags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "startingInteractivityState": {
+      "type": "string",
+      "enum": [
+        "Open",
+        "ReadOnly",
+        "FixedContent",
+        "Hidden"
+      ]
+    },
+    "management": {
+      "type": "string",
+      "enum": [
+        "UserManaged",
+        "RulesManaged"
+      ]
+    },
+    "isUserCreatable": {
+      "type": "boolean"
+    },
+    "dashboardBuildDeferralSeconds": {
+      "type": "number"
+    },
+    "dashboardSchedule": {
+      "$ref": "#/definitions/ScheduledEventTemplate"
+    },
+    "view": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/ViewRowDef"
+      }
+    },
+    "viewDataInitialization": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/InitialViewData"
+      }
+    },
+    "oldToGroom": {
+      "$ref": "#/definitions/TimeFrame"
+    },
+    "isEveryoneAMember": {
+      "type": "boolean"
+    },
+    "workItemCreationTemplates": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/CreatableWorkItem"
+      }
+    }
+  },
+  "required": [
+    "domainName",
+    "name",
+    "descendingOrder",
+    "isVisibleToUsers",
+    "startingInteractivityState",
+    "management"
+  ]
+}

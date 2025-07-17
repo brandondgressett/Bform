@@ -1,0 +1,65 @@
+{
+  "ConnectionStrings": {
+    "MongoDB": "mongodb://localhost:27017/bformdomain"
+  },
+  "MongoDB": {
+    "ConnectionString": "mongodb://localhost:27017/bformdomain",
+    "DatabaseName": "bformdomain"
+  },
+  "Quartz": {
+    "SchedulerName": "BFormScheduler",
+    "DatabaseName": "bformdomain",
+    "CollectionPrefix": "quartz_",
+    "ThreadCount": 10,
+    "EnableClustering": false,
+    "ClusterCheckinInterval": 15000,
+    "MisfireThreshold": 60000
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information",
+      "Quartz": "Information",
+      "BFormDomain.CommonCode.Platform.Scheduler": "Debug"
+    }
+  },
+  "JWT": {
+    "SecretKey": "your-256-bit-secret-key-here-replace-in-production",
+    "Issuer": "BFormDomain",
+    "Audience": "BFormDomain",
+    "ExpirationMinutes": 1440
+  },
+  "Twilio": {
+    "AccountSid": "your-twilio-account-sid",
+    "AuthToken": "your-twilio-auth-token",
+    "FromNumber": "+1234567890"
+  },
+  "SendGrid": {
+    "ApiKey": "your-sendgrid-api-key",
+    "FromEmail": "noreply@bformdomain.com",
+    "FromName": "BFormDomain"
+  },
+  "FileStorage": {
+    "Provider": "Physical",
+    "Physical": {
+      "BasePath": "C:\\BFormStorage",
+      "ErrorThreshold": 15,
+      "MaximumBytes": 104857600
+    }
+  },
+  "MultiTenancy": {
+    "Enabled": false,
+    "GlobalTenantId": "00000000-0000-0000-0000-000000000001",
+    "GlobalTenantName": "global",
+    "GlobalTenantDisplayName": "Global Tenant",
+    "RequireExplicitTenant": true,
+    "TenantClaimName": "tenant_id",
+    "TenantHeaderName": "X-Tenant-Id",
+    "ValidateTenantExistence": true
+  },
+  "Content": {
+    "BaseFolder": "Content",
+    "SchemaFolder": "Schemas"
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "definitions": {
+    "ColDef": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "field": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "headerName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Object",
+            "Array",
+            "Constructor",
+            "Property",
+            "Comment",
+            "Integer",
+            "Float",
+            "String",
+            "Boolean",
+            "Null",
+            "Undefined",
+            "Date",
+            "Raw",
+            "Bytes",
+            "Guid",
+            "Uri",
+            "TimeSpan"
+          ]
+        },
+        "keyType": {
+          "type": "string",
+          "enum": [
+            "NotKey",
+            "KeyDate",
+            "KeyUser",
+            "KeyTags",
+            "KeyWorkSet",
+            "KeyWorkItem",
+            "KeyRowId",
+            "KeyNumeric"
+          ]
+        }
+      }
+    },
+    "SatelliteJson": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "json": {}
+      }
+    },
+    "ScheduledEventTemplate": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "descendingOrder": {
+          "type": "integer"
+        },
+        "domainName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "satelliteData": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "tags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "eventTopic": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "schedule": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "domainName": {
+      "type": "string"
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "comment": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "collectionName": {
+      "type": "string"
+    },
+    "collectionId": {
+      "type": "string"
+    },
+    "isVisibleToUsers": {
+      "type": "boolean"
+    },
+    "isUserEditAllowed": {
+      "type": "boolean"
+    },
+    "isUserDeleteAllowed": {
+      "type": "boolean"
+    },
+    "isUserAddAllowed": {
+      "type": "boolean"
+    },
+    "displayMasterDetail": {
+      "type": "boolean"
+    },
+    "detailFormTemplate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "isDataGroomed": {
+      "type": "boolean"
+    },
+    "monthsRetained": {
+      "type": "integer"
+    },
+    "daysRetained": {
+      "type": "integer"
+    },
+    "hoursRetained": {
+      "type": "integer"
+    },
+    "minutesRetained": {
+      "type": "integer"
+    },
+    "iconClass": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "columns": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/ColDef"
+      }
+    },
+    "isPerWorkSet": {
+      "type": "boolean"
+    },
+    "isPerWorkItem": {
+      "type": "boolean"
+    },
+    "agGridColumnDefs": {
+      "$ref": "#/definitions/SatelliteJson"
+    },
+    "schedules": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/ScheduledEventTemplate"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "domainName",
+    "tags",
+    "collectionName"
+  ]
+}

@@ -1,0 +1,118 @@
+﻿Purpose
+
+The suppression service is helpful when you have a large number of entities 
+(eg, alerts, notifications with outgoing emails and texts) that are created or generated,
+but taken as a whole are too much information to process by either the user or the application.
+
+The suppression service handles this by tracking similar items and suppressing "duplicate" 
+(too similar) items for a given time period. Passed items are sent to receivers.
+Suppressed items may optionally be handled separately, as well. Items are considered
+similar by comparison of selected properties.
+
+The first passed item controls the behavior of subsequent suppressed items, 
+by determining how long the suppression will endure. Items to suppress must support
+the ICanShutUp interface, which exposes suppresion duration and property similarity
+data.
+
+One use case for receiving suppressed items is to enter them into the digest consolidation service
+instead.
+
+Requesting Suppression
+
+To enter items into the suppression service, inject the OrderSuppression<T> into your client,
+where T implements ICanShutUp. You can use the Suppressible<T> class to wrap your own data type 
+with an ICanShutUp implementation.
+
+When initializing this service, specify a message exchange
+and route for passed items and optionally for suppressed items; these will be used
+to match up to receivers later.
+
+Using the MaybeSuppress() method enters the item into the suppression service.
+
+
+Receiving Results
+
+To receive passed items or optionally suppressed items, inject a SuppressionReceiver<T> into
+your client, where T implements ICanShutUp. Initializing this component with Initialize(),
+the client selects the message exchange and queues to receive passed and suppressed items, 
+matching the same used in OrderSuppression<T>.
+
+The SuppressionReceiver exposes two events, ItemsAllowed and ItemsSuppressed, to receive 
+the data for both types of entities that the Suppression service has processed.
+
+
+
+Dependency Injection
+
+Dependent Components
+	Diagnostics
+		ILogger<T>
+		IApplicationAlert
+	Messaging
+		IMessageBusSpecifier
+		IMessagePublisher
+		IMessageListener
+Core Elements
+	DuplicateSuppressionCore<T>
+	ISuppressionPersistence -> MongoSuppressionPersistence
+	OrderSuppression<T>
+	SuppressionReceiver
+	SuppressionRepository
+Hosted Services
+	DuplicateSuppresionService<T>
+	SuppressionGroomingService
+
+
+
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                                                                                                                                                                                │
+│                                                                                                                          Suppression                                                                                                                           │
+│                                                                                                                                                                                                                                                                │
+├───────────────────────────────────────────────────┬─┬──────────────────────────────────────────────┬─┬────────────────────────────────────────────────┬─┬───────────────────────────────────────────────┬─┬────────────────────────────────────────────────────┤
+├───────────────────────────────────────────────────┤ ├──────────────────────────────────────────────┤ ├────────────────────────────────────────────────┤ ├───────────────────────────────────────────────┤ ├────────────────────────────────────────────────────┤
+│                   Client                          │ │               SuppressionOrder               │ │           DuplicateSuppressionService          │ │        DuplicateSuppressionCore               │ │         SuppressionResultReceiver                  │
+│   NEED                                            │ │                                              │ │    ┌────────────────────────────────┐          │ │   ┌─────────────────────────────┐             │ │                                                    │
+│  _SuppressionOrder                                │ │   ┌───────────────────────────┐              │ │    │Message bus listener calls      │          │ │   │ShouldBeSuppressed           │             │ │   ┌────────────────────────────────────┐           │
+│  _SuppressionResultReciever                       │ │   │MaybeSuppressAsync         │              │ │    │ProcessMessage for each message │          │ │   │  Checks to see if message   │             │ │   │Initialies a suppressed message bus │           │
+│                                                   │ │   │ Uses publisher to         ├──────────────┼─┼──► └─────┬──────────────────────────┘          │ │   │  is eitehr already supressed│             │ │   │listener and an allowed message bus │           │
+│  _________________________                        │ │   │ send message to           │              │ │          │                                     │ │   │  and if message is similar  │             │ │   │listener.                           │           │
+│                                                   │ │   │ message bus               │              │ │          ▼                                     │ │   │  to other suppressed messages             │ │   └───┬───────────────────────────┬────┘           │
+│                ┌──────┐                           │ │   │ listened to in            │              │ │   ┌──────────────────────────────┐             │ │   │  via a comparison hash and  │             │ │    ▲  ├───────────────────────────┤                │
+│                │START │                           │ │   │ DuplicateSuppressionService              │ │   │ProcessMessage                ├─────────────┼─┼─► │  returns true if the message│             │ │    │  │ Suppressed?  or   Allowed │                │
+│                └──┬───┘                           │ │   └───────────────────────────┘              │ │   │  Calls ShouldBeSuppressed    │             │ │   │  needs to be suppressed and │             │ │    │  └───┬────────────────────┬──┘                │
+│                   │                               │ │    ▲                                         │ │   │  to initialize forwarding    │             │ │   │  false if it doesn't        │             │ │    │      │                    │                   │
+│                   ▼                               │ │    │                                         │ │   │  publisher with a supressed  │             │ │   └─────────────────────────────┘             │ │    │      │                    │                   │
+│       ┌───────────────────────────────────────┐   │ │    │                                         │ │   │  exchange or an allowed      │             │ │                                               │ │    │      │                    │                   │
+│       │    SuppressionOrder.MaybeSuppressAsync├───┼─┼────┘                                         │ │   │  exchange and publishes it   │             │ │                                               │ │    │      │                    │                   │
+│       └───────────────────────────────────────┘   │ │                                              │ │   │  to the respected message bus│             │ │                                               │ │    │      │                    │                   │
+│                                                   │ │                                              │ │   │  listened for in             ├─────────────┼─┼───────────────────────────────────────────────┼─┼────┘      │                    │                   │
+│                                                   │ │                                              │ │   │  SuppressionResultReceiver   │             │ │                                               │ │           │                    │                   │
+│                                                   │ │                                              │ │   └──────────────────────────────┘             │ │                                               │ │           │                    │                   │
+│                                                   │ │                                              │ │                                                │ │                                               │ │           ▼                    ▼                   │
+│                                                   │ │                                              │ │                                                │ │                                               │ │  ┌──────────────────┐    ┌───────────────┐         │
+│                                                   │ │                                              │ │                                                │ │                                               │ │  │ ProcessSuppressed│    │ProcessAllowed │         │
+│                                                   │ │                                              │ │                                                │ │                                               │ │  │   Calls defined  │    │  Calls defined│         │
+│                                                   │ │                                              │ │                                                │ │                                               │ │  │   function for   │    │  function for │         │
+│                                                   │ │                                              │ │                                                │ │                                               │ │  │   suppressed items    │  allowed items│         │
+│                                                   │ │                                              │ │                                                │ │                                               │ │  └────────┬─────────┘    └──────────┬────┘         │
+│                                                   │ │                                              │ │                                                │ │                                               │ │           │                         │              │
+│                                                   │ │                                              │ │                                                │ │                                               │ │           │                         │              │
+│                                                   │ │                                              │ │                                                │ │                                               │ │           │                         │              │
+│  ┌──────────────────────────────────────────┐     │ │                                              │ │                                                │ │                                               │ │           │                         │              │
+│  │Define Function ProcessSuppressed         │     │ │                                              │ │                                                │ │                                               │ │           │                         │              │
+│  │   In Initialize function set             │     │ │                                              │ │                                                │ │                                               │ │           │                         │              │
+│  │   SuppressionResultReceiver.ItemSuppressed◄────┼─┼──────────────────────────────────────────────┼─┼────────────────────────────────────────────────┼─┼───────────────────────────────────────────────┼─┼───────────┘                         │              │
+│  │   to this function                       │     │ │                                              │ │                                                │ │                                               │ │                                     │              │
+│  └──────────────────────────────────────────┘     │ │                                              │ │                                                │ │                                               │ │                                     │              │
+│                                                   │ │                                              │ │                                                │ │                                               │ │                                     │              │
+│                                                   │ │                                              │ │                                                │ │                                               │ │                                     │              │
+│  ┌────────────────────────────────────────┐       │ │                                              │ │                                                │ │                                               │ │                                     │              │
+│  │Define Function ProcessAllowed          │       │ │                                              │ │                                                │ │                                               │ │                                     │              │
+│  │   In Initialize function set           │       │ │                                              │ │                                                │ │                                               │ │                                     │              │
+│  │  SuppressionResultReceiver.ItemAllowed │◄──────┼─┼──────────────────────────────────────────────┼─┼────────────────────────────────────────────────┼─┼───────────────────────────────────────────────┼─┼─────────────────────────────────────┘              │
+│  │  to this function                      │       │ │                                              │ │                                                │ │                                               │ │                                                    │
+│  └────────────────────────────────────────┘       │ │                                              │ │                                                │ │                                               │ │                                                    │
+│                                                   │ │                                              │ │                                                │ │                                               │ │                                                    │
+│                                                   │ │                                              │ │                                                │ │                                               │ │                                                    │
+│                                                   │ │                                              │ │                                                │ │                                               │ │                                                    │
+└───────────────────────────────────────────────────┘ └──────────────────────────────────────────────┘ └────────────────────────────────────────────────┘ └───────────────────────────────────────────────┘ └────────────────────────────────────────────────────┘

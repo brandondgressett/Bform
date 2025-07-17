@@ -1,0 +1,232 @@
+{
+  "id": "servicePlan",
+  "name": "Service Plan",
+  "description": "Defines subscription tiers with user limits, feature access, and usage quotas",
+  "category": "System",
+  "tags": ["billing", "subscription", "tenant"],
+  "jsonSchema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["name", "tier", "isActive", "limits", "features"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "title": "Plan Name",
+        "description": "Display name for the service plan"
+      },
+      "tier": {
+        "type": "string",
+        "title": "Tier",
+        "enum": ["free", "starter", "professional", "enterprise", "custom"],
+        "enumNames": ["Free", "Starter", "Professional", "Enterprise", "Custom"]
+      },
+      "description": {
+        "type": "string",
+        "title": "Description",
+        "description": "Detailed description of what this plan includes"
+      },
+      "isActive": {
+        "type": "boolean",
+        "title": "Active",
+        "default": true,
+        "description": "Whether this plan is available for new subscriptions"
+      },
+      "monthlyPrice": {
+        "type": "number",
+        "title": "Monthly Price",
+        "minimum": 0,
+        "description": "Monthly subscription price in dollars"
+      },
+      "annualPrice": {
+        "type": "number",
+        "title": "Annual Price",
+        "minimum": 0,
+        "description": "Annual subscription price in dollars"
+      },
+      "limits": {
+        "type": "object",
+        "title": "Resource Limits",
+        "properties": {
+          "maxUsers": {
+            "type": "integer",
+            "title": "Max Users",
+            "minimum": 1,
+            "description": "Maximum number of user accounts"
+          },
+          "maxWorkSets": {
+            "type": "integer",
+            "title": "Max WorkSets",
+            "minimum": 0,
+            "description": "Maximum number of WorkSets (0 = unlimited)"
+          },
+          "maxWorkItems": {
+            "type": "integer",
+            "title": "Max Work Items",
+            "minimum": 0,
+            "description": "Maximum number of Work Items (0 = unlimited)"
+          },
+          "maxFormsPerMonth": {
+            "type": "integer",
+            "title": "Max Forms/Month",
+            "minimum": 0,
+            "description": "Maximum form submissions per month (0 = unlimited)"
+          },
+          "maxStorageGB": {
+            "type": "number",
+            "title": "Max Storage (GB)",
+            "minimum": 0,
+            "description": "Maximum file storage in gigabytes"
+          },
+          "maxApiCallsPerDay": {
+            "type": "integer",
+            "title": "Max API Calls/Day",
+            "minimum": 0,
+            "description": "Maximum API calls per day (0 = unlimited)"
+          },
+          "maxScheduledJobs": {
+            "type": "integer",
+            "title": "Max Scheduled Jobs",
+            "minimum": 0,
+            "description": "Maximum number of scheduled jobs"
+          },
+          "maxReportsPerMonth": {
+            "type": "integer",
+            "title": "Max Reports/Month",
+            "minimum": 0,
+            "description": "Maximum report generations per month"
+          }
+        }
+      },
+      "features": {
+        "type": "object",
+        "title": "Feature Access",
+        "properties": {
+          "customBranding": {
+            "type": "boolean",
+            "title": "Custom Branding",
+            "default": false
+          },
+          "advancedReporting": {
+            "type": "boolean",
+            "title": "Advanced Reporting",
+            "default": false
+          },
+          "apiAccess": {
+            "type": "boolean",
+            "title": "API Access",
+            "default": false
+          },
+          "customRules": {
+            "type": "boolean",
+            "title": "Custom Rules Engine",
+            "default": false
+          },
+          "multiTenancy": {
+            "type": "boolean",
+            "title": "Multi-Tenancy Support",
+            "default": false
+          },
+          "ssoIntegration": {
+            "type": "boolean",
+            "title": "SSO Integration",
+            "default": false
+          },
+          "dataExport": {
+            "type": "boolean",
+            "title": "Data Export",
+            "default": true
+          },
+          "emailNotifications": {
+            "type": "boolean",
+            "title": "Email Notifications",
+            "default": true
+          },
+          "smsNotifications": {
+            "type": "boolean",
+            "title": "SMS Notifications",
+            "default": false
+          },
+          "webhooks": {
+            "type": "boolean",
+            "title": "Webhooks",
+            "default": false
+          },
+          "customFields": {
+            "type": "boolean",
+            "title": "Custom Fields",
+            "default": false
+          },
+          "auditLog": {
+            "type": "boolean",
+            "title": "Audit Log Access",
+            "default": false
+          }
+        }
+      },
+      "quotas": {
+        "type": "object",
+        "title": "Usage Quotas",
+        "properties": {
+          "emailCreditsPerMonth": {
+            "type": "integer",
+            "title": "Email Credits/Month",
+            "minimum": 0,
+            "description": "Email notification credits per month"
+          },
+          "smsCreditsPerMonth": {
+            "type": "integer",
+            "title": "SMS Credits/Month",
+            "minimum": 0,
+            "description": "SMS notification credits per month"
+          },
+          "aiCreditsPerMonth": {
+            "type": "integer",
+            "title": "AI Credits/Month",
+            "minimum": 0,
+            "description": "AI processing credits per month"
+          }
+        }
+      },
+      "support": {
+        "type": "object",
+        "title": "Support Level",
+        "properties": {
+          "level": {
+            "type": "string",
+            "title": "Support Level",
+            "enum": ["community", "email", "priority", "dedicated"],
+            "enumNames": ["Community", "Email", "Priority", "Dedicated"]
+          },
+          "responseTimeHours": {
+            "type": "integer",
+            "title": "Response Time (Hours)",
+            "minimum": 1,
+            "description": "Guaranteed response time in hours"
+          },
+          "includedHours": {
+            "type": "integer",
+            "title": "Included Support Hours",
+            "minimum": 0,
+            "description": "Included support hours per month"
+          }
+        }
+      }
+    }
+  },
+  "uiSchema": {
+    "description": {
+      "ui:widget": "textarea"
+    },
+    "limits": {
+      "ui:title": "Resource Limits",
+      "ui:description": "Set to 0 for unlimited"
+    },
+    "features": {
+      "ui:title": "Feature Toggles",
+      "ui:description": "Enable/disable specific features"
+    },
+    "quotas": {
+      "ui:title": "Monthly Usage Quotas"
+    }
+  }
+}

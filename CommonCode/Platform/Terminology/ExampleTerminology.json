@@ -1,0 +1,12 @@
+﻿{
+  "AppName": "BForm",
+  "InvitationSubject": "Register on BForm",
+  "InvitationBody": "Invitation Code:{invitecode}",
+  "PasswordResetSubject": "Password Reset",
+  "PasswordResetBody": "Your new BForm password: {password}",
+  "Project": "Project",
+  "Projects": "Projects",
+  "SignUpGreeting": "<!-- BForm HTML --><h2>Welcome to <b>BForm</b>.</h2>",
+  "Ticket": "Ticket",
+  "Tickets": "Tickets"
+}

@@ -1,0 +1,209 @@
+{
+  "definitions": {
+    "RuleAction": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "appendBefore": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/RuleExpressionInvocation"
+          }
+        },
+        "invoke": {
+          "$ref": "#/definitions/RuleActionInvocation"
+        },
+        "appendAfter": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/RuleExpressionInvocation"
+          }
+        }
+      }
+    },
+    "RuleActionInvocation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "result": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "args": {},
+        "sealEvents": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "RuleCondition": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "comment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "append": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/RuleExpressionInvocation"
+          }
+        },
+        "query": {
+          "type": "string"
+        },
+        "check": {
+          "type": "string",
+          "enum": [
+            "Any",
+            "None",
+            "Single"
+          ]
+        },
+        "negate": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "query",
+        "check"
+      ]
+    },
+    "RuleExpressionInvocation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "result": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "args": {}
+      },
+      "required": [
+        "name"
+      ]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "comment": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "topicBindings": {
+      "type": "array",
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "domainName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "eventTags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RuleCondition"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/RuleAction"
+      }
+    }
+  },
+  "required": [
+    "name",
+    "topicBindings",
+    "conditions",
+    "actions"
+  ]
+}

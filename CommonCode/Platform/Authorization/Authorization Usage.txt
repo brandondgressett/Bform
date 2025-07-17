@@ -1,0 +1,3 @@
+﻿
+https://www.youtube.com/playlist?list=PLcvTyQIWJ_ZpumOgCCify-wDY_G-Kx34a
+https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore

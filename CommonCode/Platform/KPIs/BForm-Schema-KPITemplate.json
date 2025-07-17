@@ -1,0 +1,246 @@
+{
+  "definitions": {
+    "KPIComputeStage": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "resultName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "computeType": {
+          "type": "string",
+          "enum": [
+            "Intermediate",
+            "Supporting",
+            "Main",
+            "Signal"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "scriptLines": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "sampleId": {
+          "type": "integer"
+        }
+      }
+    },
+    "KPISignalStage": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "signalName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "signalId": {
+          "type": "integer"
+        },
+        "scriptLines": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "KPISource": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "sourceName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tableTemplate": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "userSubject": {
+          "type": "boolean"
+        },
+        "workSetSubject": {
+          "type": "boolean"
+        },
+        "workItemSubject": {
+          "type": "boolean"
+        },
+        "tagSubject": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "minimumSamples": {
+          "type": "integer"
+        }
+      }
+    },
+    "TimeFrame": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "timeFrameMinutes": {
+          "type": "integer"
+        },
+        "timeFrameHours": {
+          "type": "integer"
+        },
+        "timeFrameDays": {
+          "type": "integer"
+        },
+        "timeFrameMonths": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "domainName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "scheduleTemplate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "iconClass": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "allowUserCreate": {
+      "type": "boolean"
+    },
+    "allowUserDelete": {
+      "type": "boolean"
+    },
+    "computeTimeFrame": {
+      "$ref": "#/definitions/TimeFrame"
+    },
+    "viewTimeFrame": {
+      "$ref": "#/definitions/TimeFrame"
+    },
+    "sampleCount": {
+      "type": "integer"
+    },
+    "sources": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/KPISource"
+      }
+    },
+    "computeStages": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/KPIComputeStage"
+      }
+    },
+    "signalStages": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/KPISignalStage"
+      }
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "dataGroomingTimeFrame": {
+      "$ref": "#/definitions/TimeFrame"
+    }
+  }
+}

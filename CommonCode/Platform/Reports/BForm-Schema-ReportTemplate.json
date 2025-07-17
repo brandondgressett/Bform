@@ -1,0 +1,643 @@
+{
+  "definitions": {
+    "ChartSpec": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "includeChart": {
+          "type": "boolean"
+        },
+        "chartTitle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartShowAtBottom": {
+          "type": "boolean"
+        },
+        "chartChangeOnField": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartValueField": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartShowBorder": {
+          "type": "boolean"
+        },
+        "chartLabelHeader": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartPercentageHeader": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartValueHeader": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ColDef": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "field": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "headerName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Object",
+            "Array",
+            "Constructor",
+            "Property",
+            "Comment",
+            "Integer",
+            "Float",
+            "String",
+            "Boolean",
+            "Null",
+            "Undefined",
+            "Date",
+            "Raw",
+            "Bytes",
+            "Guid",
+            "Uri",
+            "TimeSpan"
+          ]
+        },
+        "keyType": {
+          "type": "string",
+          "enum": [
+            "NotKey",
+            "KeyDate",
+            "KeyUser",
+            "KeyTags",
+            "KeyWorkSet",
+            "KeyWorkItem",
+            "KeyRowId",
+            "KeyNumeric"
+          ]
+        }
+      }
+    },
+    "ColumnFilter": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "field": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Field": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "fieldName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "headerName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "width": {
+          "type": "integer"
+        },
+        "isTotalField": {
+          "type": "boolean"
+        },
+        "alignment": {
+          "type": "string",
+          "enum": [
+            "LEFT",
+            "RIGHT",
+            "CENTER"
+          ]
+        },
+        "backColor": {
+          "type": "string"
+        },
+        "headerBackColor": {
+          "type": "string"
+        }
+      }
+    },
+    "RelativeTableQueryCommand": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "tableTemplate": {
+          "type": "string"
+        },
+        "idFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "idFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "eqDateFilter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "eqDateFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ltDateFilter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "ltDateFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "gtDateFilter": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "gtDateFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "secondsBack": {
+          "type": "integer"
+        },
+        "minutesBack": {
+          "type": "integer"
+        },
+        "hoursBack": {
+          "type": "integer"
+        },
+        "daysBack": {
+          "type": "integer"
+        },
+        "monthsBack": {
+          "type": "integer"
+        },
+        "userFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "userFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workSetFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workSetFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workItemFilter": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workItemFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "matchAnyTags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "matchAnyTagsQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "matchAllTags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "matchAllTagsQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ltNumericFilter": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ltNumericFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "gtNumericFilter": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "gtNumericFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "eqNumericFilter": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "eqNumericFilterQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workSetSpecificData": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workSetSpecificDataQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workItemSpecificData": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "workItemSpecificDataQuery": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ordering": {
+          "type": "string",
+          "enum": [
+            "None",
+            "Date",
+            "DateDescending",
+            "Numeric",
+            "NumericDescending"
+          ]
+        },
+        "columnFilters": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "$ref": "#/definitions/ColumnFilter"
+          }
+        }
+      },
+      "required": [
+        "tableTemplate"
+      ]
+    },
+    "Section": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "groupBy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "titlePrefix": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "includeFooter": {
+          "type": "boolean"
+        },
+        "gradientBackground": {
+          "type": "boolean"
+        },
+        "includeTotal": {
+          "type": "boolean"
+        },
+        "subSection": {
+          "$ref": "#/definitions/Section"
+        },
+        "includeChart": {
+          "type": "boolean"
+        },
+        "chartTitle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartShowAtBottom": {
+          "type": "boolean"
+        },
+        "chartChangeOnField": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartValueField": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartShowBorder": {
+          "type": "boolean"
+        },
+        "chartLabelHeader": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartPercentageHeader": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "chartValueHeader": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "backColor": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "descendingOrder": {
+      "type": "integer"
+    },
+    "domainName": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "satelliteData": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "tags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "query": {
+      "$ref": "#/definitions/RelativeTableQueryCommand"
+    },
+    "queryFormTemplate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "groomReportInstances": {
+      "type": "boolean"
+    },
+    "groomingLifeDays": {
+      "type": "integer"
+    },
+    "titleTemplate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "reportFont": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "totalFields": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "includeTotal": {
+      "type": "boolean"
+    },
+    "sections": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Section"
+      }
+    },
+    "fields": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/Field"
+      }
+    },
+    "titleElements": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "$ref": "#/definitions/ColDef"
+      }
+    },
+    "chartSpec": {
+      "$ref": "#/definitions/ChartSpec"
+    },
+    "notificationGroupsWithTags": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "smsNotify": {
+      "type": "boolean"
+    },
+    "emailNotify": {
+      "type": "boolean"
+    },
+    "toastNotify": {
+      "type": "boolean"
+    },
+    "callNotify": {
+      "type": "boolean"
+    },
+    "suppressionMinutes": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "iconClass": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "userCreatable": {
+      "type": "boolean"
+    }
+  }
+}
